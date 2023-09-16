@@ -13,8 +13,8 @@ class Key {
 class Person {
   constructor(private key: Key) {}
 
-  getKey(): Key {
-    return this.key;
+  getKey(): number {
+    return this.key.getSignature();
   }
 }
 
@@ -25,11 +25,15 @@ abstract class House {
   constructor(protected key: Key) {}
 
   comeIn(person: Person): void {
-    if (this.door) this.tenants.push(person);
-    else throw new Error("The door is closed");
+    if (this.door) {
+      this.tenants.push(person);
+      console.log("Welcome");
+    } else {
+      console.log("The door is closed");
+    }
   }
 
-  abstract openDoor(key: Key): void;
+  abstract openDoor(key: number): void;
 }
 
 class MyHouse extends House {
@@ -37,9 +41,13 @@ class MyHouse extends House {
     super(key);
   }
 
-  openDoor(key: Key): void {
-    if (key === this.key) this.door = true;
-    else throw new Error("The key is wrong");
+  openDoor(key: number): void {
+    if (key === this.key.getSignature()) {
+      this.door = true;
+      console.log("The door is opened");
+    } else {
+      console.log("The key is wrong");
+    }
   }
 }
 
